@@ -1,0 +1,16 @@
+name: build
+on: [push, workflow_dispatch]
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ilammy/msvc-dev-cmd@v1
+      - run: cmake -B out -A x64 -DCMAKE_BUILD_TYPE=Release
+      - run: cmake --build out --config Release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vanish-internal
+          path: |
+            out/Release/vanish.dll
+            out/Release/injector.exe
